@@ -205,25 +205,29 @@ int eeprom_read(int slave, int start, int length)
    uint16 estat, aiadr;
    uint32 b4;
    uint64 b8;
-   uint8 eepctl;
+   uint8 eepctl;  // eeprom_controlのこと？
 
-   if((ec_slavecount >= slave) && (slave > 0) && ((start + length) <= MAXBUF))
+   if((ec_slavecount >= slave) && (slave > 0) && ((start + length) <= MAXBUF))   // 見る範囲が超えていないか？
    {
       aiadr = 1 - slave;
       eepctl = 2;
+
+      // APWR "auto increment address write" primitive. Blocking.
       ec_APWR(aiadr, ECT_REG_EEPCFG, sizeof(eepctl), &eepctl , EC_TIMEOUTRET); /* force Eeprom from PDI */
       eepctl = 0;
       ec_APWR(aiadr, ECT_REG_EEPCFG, sizeof(eepctl), &eepctl , EC_TIMEOUTRET); /* set Eeprom to master */
 
       estat = 0x0000;
       aiadr = 1 - slave;
+      // APRD "auto increment address read" primitive. Blocking.
       ec_APRD(aiadr, ECT_REG_EEPSTAT, sizeof(estat), &estat, EC_TIMEOUTRET); /* read eeprom status */
-      estat = etohs(estat);
-      if (estat & EC_ESTAT_R64)
+      estat = etohs(estat);   // ビッグエンディアンかリトルエンディアンかで値を変化させる
+      if (estat & EC_ESTAT_R64) /** EC_ESTAT_R64 = EEprom state machine read size */
       {
-         ainc = 8;
+         ainc = 8;   
          for (i = start ; i < (start + length) ; i+=ainc)
          {
+            // Read EEPROM from slave bypassing cache. APRD method.
             b8 = ec_readeepromAP(aiadr, i >> 1 , EC_TIMEOUTEEP);
             ebuf[i] = b8 & 0xFF;
             ebuf[i+1] = (b8 >> 8) & 0xFF;
@@ -329,7 +333,7 @@ void eepromtool(char *ifname, int slave, int mode, char *fname)
          printf("%d slaves found.\n",ec_slavecount);
          if((ec_slavecount >= slave) && (slave > 0))
          {
-            if ((mode == MODE_INFO) || (mode == MODE_READBIN) || (mode == MODE_READINTEL))
+            if ((mode == MODE_INFO) || (mode == MODE_READBIN) || (mode == MODE_READINTEL))   // "-i"を指定した場合
             {
                tstart = osal_current_time();
                eeprom_read(slave, 0x0000, MINBUF); // read first 128 bytes
@@ -438,7 +442,7 @@ int main(int argc, char *argv[])
    if (argc > 3)
    {
       slave = atoi(argv[2]);
-      if ((strncmp(argv[3], "-i", sizeof("-i")) == 0))   mode = MODE_INFO;
+      if ((strncmp(argv[3], "-i", sizeof("-i")) == 0))   mode = MODE_INFO; // "-i"を指定した場合
       if (argc > 4)
       {
          if ((strncmp(argv[3], "-r", sizeof("-r")) == 0))   mode = MODE_READBIN;
