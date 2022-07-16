@@ -1,0 +1,139 @@
+
+Easy Configurator, configuration engine  V_3_2 
+
+log created on Sat Jul 16 15:21:49 2022
+
+Analyzing the project file
+
+Easy Configurator project test1.prj
+
+OUTPUTS_TAG
+Line 4 --- int8_out                int8_t
+Line 5 --- uint8_out               uint8_t
+Line 6 --- uint16_out              uint16_t
+Line 7 --- uint32_out              uint32_t
+INPUTS_TAG
+Line 9 --- int8_in                 int8_t
+Line 10 --- uint8_in                uint8_t
+Line 11 --- uint16_in               uint16_t
+Line 12 --- uint32_in               uint32_t
+INFO_TAG
+0x1234
+com.fal
+0x1234
+0x1
+falfan
+falfan
+END_TAG
+
+The test1.prj configuration file is correct
+
+ByteNumOut 8
+ByteNumIn  8
+PdoNumOut  4
+PdoNumIn   4
+
+Creating the test1.xml file
+
+PROJECT_TAG   test1.prj
+VENDOID_TAG   1234
+VEN_NAM_TAG   com.fal
+PRO_COD_TAG   1234
+REVISIO_TAG   1
+DEV_NAM_TAG   falfan
+DEV_NAM_TAG   falfan
+
+FIRST_TAG
+
+Output entries
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>uint32_out</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>16</BitLen>
+            <Name>uint16_out</Name>
+            <DataType>UINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>8</BitLen>
+            <Name>uint8_out</Name>
+            <DataType>USINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>8</BitLen>
+            <Name>int8_out</Name>
+            <DataType>SINT</DataType>
+          </Entry>
+
+SECOND_TAG
+
+Input entries
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>uint32_in</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>16</BitLen>
+            <Name>uint16_in</Name>
+            <DataType>UINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>8</BitLen>
+            <Name>uint8_in</Name>
+            <DataType>USINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>8</BitLen>
+            <Name>int8_in</Name>
+            <DataType>SINT</DataType>
+          </Entry>
+
+LAST_TAG
+
+The test1.xml file has been created
+
+Creating the test1.h file
+
+#define CUST_BYTE_NUM_OUT	8
+#define CUST_BYTE_NUM_IN	8
+#define TOT_BYTE_NUM_ROUND_OUT	8
+#define TOT_BYTE_NUM_ROUND_IN	8
+
+
+Output entries
+		uint32_t    uint32_out;
+		uint16_t    uint16_out;
+		uint8_t     uint8_out;
+		int8_t      int8_out;
+
+Input entries
+		uint32_t    uint32_in;
+		uint16_t    uint16_in;
+		uint8_t     uint8_in;
+		int8_t      int8_in;
+
+The test1.h file has been created
+
+Creating the test1.bin file
+
+
+The test1.bin file has been created
